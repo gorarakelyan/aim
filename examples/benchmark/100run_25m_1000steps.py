@@ -3,6 +3,7 @@ import aim
 
 for r in range(100):
     sess = aim.Session(experiment='100run_25m_1000steps')
+    print('Run {}: {}'.format(r, sess.run_hash))
 
     sess.set_params({
         'test_param_1': 1,
