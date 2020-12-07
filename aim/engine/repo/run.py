@@ -1,17 +1,20 @@
 import os
 from typing import Optional, Dict
 import json
+from copy import deepcopy
 
 from aim.engine.configs import (
     AIM_OBJECTS_DIR_NAME,
     AIM_MAP_DIR_NAME,
     AIM_COMMIT_CONFIG_FILE_NAME,
+    AIM_MAP_METRICS_KEYWORD,
 )
 from aim.engine.repo.utils import (
     get_run_objects_dir_path,
     get_run_objects_meta_file_path,
 )
 from aim.engine.repo.metric import Metric
+from aim.artifacts.metric import Metric as MetricArtifact
 
 
 class Run(object):
@@ -21,8 +24,8 @@ class Run(object):
         self.run_hash = run_hash
         self._config = None
         self._params = None
-        self._metrics: Optional[Dict[str, Metric]] = {}
-        self._tmp_all_metrics: Optional[Dict[str, Metric]] = None
+        self._metrics = {}  # type: Optional[Dict[str, Metric]]
+        self._tmp_all_metrics = None  # type: Optional[Dict[str, Metric]]
         self._storage = None
 
     def __repr__(self):
@@ -31,6 +34,9 @@ class Run(object):
 
     def __hash__(self):
         return hash((self.repo.path, self.experiment_name, self.run_hash))
+
+    def __eq__(self, other):
+        return hash(self) == hash(other)
 
     @property
     def params(self) -> dict:
@@ -95,17 +101,62 @@ class Run(object):
 
         return metrics
 
-    def to_dict(self) -> dict:
+    def to_dict(self, include_only_selected_agg_metrics=False) -> dict:
         metrics_list = []
         for metric_name, metric in self._metrics.items():
             metrics_list.append(metric.to_dict())
+
+        params = self.params
+        if include_only_selected_agg_metrics is True \
+                and AIM_MAP_METRICS_KEYWORD in params.keys():
+            params = deepcopy(params)
+            selected_metrics_dict = {}
+            for metric_name, contexts in params[AIM_MAP_METRICS_KEYWORD].items():
+                if metric_name not in self.metrics.keys():
+                    continue
+                selected_metrics_dict.setdefault(metric_name, [])
+                for context in contexts:
+                    for selected_trace in self.metrics[metric_name].traces:
+                        if selected_trace.eq_context(context['context']):
+                            selected_metrics_dict[metric_name].append(context)
+                            break
+            params[AIM_MAP_METRICS_KEYWORD] = selected_metrics_dict
+
         return {
             'metrics': metrics_list,
             'experiment_name': self.experiment_name,
             'run_hash': self.run_hash,
             'date': self.config.get('date'),
-            'params': self.params,
+            'params': params,
         }
+
+    def get_aggregated_metrics_values(self):
+        aggregated_items = {}
+        self.open_storage()
+        for metric_name, metric in self.metrics.items():
+            aggregated_items.setdefault(metric_name, [])
+            metric.open_artifact()
+            for trace in metric.traces:
+                min_val = max_val = last_val = None
+                for r in trace.read_records(slice(0, None, 1)):
+                    _, metric_record = MetricArtifact.deserialize_pb(r)
+                    value = metric_record.value
+                    if min_val is None or value < min_val:
+                        min_val = value
+                    if max_val is None or value > max_val:
+                        max_val = value
+                    last_val = value
+                aggregated_items[metric_name].append({
+                    'context': trace.hashable_context,
+                    'values': {
+                        'min': min_val,
+                        'max': max_val,
+                        'last': last_val,
+                    },
+                })
+            metric.close_artifact()
+        self.close_storage()
+        return aggregated_items
 
     def _load_params(self) -> dict:
         params_file_path = os.path.join(self.repo.path,

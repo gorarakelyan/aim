@@ -9,7 +9,7 @@ class Metric(object):
         self.run = run
         self.name = name
         self.context = context
-        self._traces: List[Trace] = []
+        self._traces = []  # type: List[Trace]
         self._artifact_storage_opened = False
 
     def __repr__(self):
@@ -43,7 +43,7 @@ class Metric(object):
 
     def get_all_traces(self, ignore_empty_context=False) -> list:
         traces = []
-        if self.context is None or len(self.context) == 0:
+        if self.context is None:
             if not ignore_empty_context:
                 # Get whole metric data if no context was provided
                 traces.append(Trace(self.repo, self, self.name, None))

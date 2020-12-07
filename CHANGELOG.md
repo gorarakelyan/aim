@@ -1,5 +1,60 @@
 # Changelog
 
+## 2.1.4 Dec 2 2020
+- Add ability to specify session run hash (gorarakelyan)
+- Initialize repo if it was empty when opening session (gorarakelyan)
+- Add validation of map artifact parameters (gorarakelyan)
+
+## 2.1.3 Nov 24 2020
+- Support comparison of list type contexts (gorarakelyan)
+
+## 2.1.2 Nov 24 2020
+- Fix empty contexts comparison issue (gorarakelyan)
+
+## 2.1.1 Nov 22 2020
+- Return only selected params in SelectResult (gorarakelyan)
+
+## 2.1.0 Nov 19 2020
+- Add AimRepo select method (gorarakelyan)
+- Implement SelectResult class (gorarakelyan)
+
+## 2.0.27 Nov 13 2020
+- Fix issue with artifact step initializer (gorarakelyan)
+
+## 2.0.26 Nov 10 2020
+- Add `block_termination` argument to aim.Session (gorarakelyan)
+- Convert infinity parameter to string in artifacts (gorarakelyan)
+
+## 2.0.25 Nov 9 2020
+- Reconstruct run metadata file when running close command (gorarakelyan)
+
+## 2.0.24 Nov 8 2020
+- Add SIGTERM signal handler (gorarakelyan)
+- Run `track` function in a parallel thread (gorarakelyan)
+- Add SDK session flush method (gorarakelyan)
+- Flush aggregated metrics at a given frequency (gorarakelyan)
+- Update run metadata file only on artifacts update (gorarakelyan)
+
+## 2.0.23 Nov 5 2020
+- Make experiment name argument required in SDK close command (gorarakelyan)
+
+## 2.0.22 Nov 5 2020
+- Add SDK `close` method to close dangling experiments (gorarakelyan)
+
+## 2.0.21 Nov 1 2020
+- Resolve compatibility issues with python 3.5.0 (gorarakelyan)
+
+## 2.0.20 Oct 26 2020
+- Enable pypi aim package name (gorarakelyan)
+
+## 2.0.19 Oct 25 2020
+- Add PyTorch Lightning logger (gorarakelyan)
+- Add TensorFlow v1 and v2 keras callbacks support (gorarakelyan)
+
+## 2.0.18 Oct 7 2020
+- Add ability to run Aim UI in detached mode (gorarakelyan)
+- Add ability to specify repo path when running Aim UI (gorarakelyan)
+
 ## 2.0.17 Oct 5 2020
 - Rename `AimDE` to `Aim UI` (gorarakelyan)
 

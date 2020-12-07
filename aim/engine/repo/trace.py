@@ -1,5 +1,7 @@
 from typing import Dict, Any, Union, Optional, Tuple
 
+from aim.engine.utils import contexts_equal
+
 
 class Trace(object):
     def __init__(self, repo, metric, name: str, context: Optional[list] = None):
@@ -8,11 +10,13 @@ class Trace(object):
         self.name = name
         self.data = []
         self._num_records = None
-        self.context = None
-        if context is not None and len(context):
-            self.context: Dict[str, Union[str, Any]] = {
+        self.context = None  # type: Optional[Dict[str, Union[str, Any]]]
+        self.hashable_context = None
+        if context is not None:
+            self.context = {
                 k: v for (k, v) in context
             }
+            self.hashable_context = tuple(sorted(self.context.items()))
 
     def __repr__(self):
         return str(self.context)
@@ -48,3 +52,6 @@ class Trace(object):
             'num_steps': self.num_records,
             'data': self.data,
         }
+
+    def eq_context(self, other):
+        return contexts_equal(other, self.hashable_context)

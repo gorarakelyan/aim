@@ -1,27 +1,115 @@
-# Aim
+<div align="center">
 
-![GitHub Top Language](https://img.shields.io/github/languages/top/aimhubio/aim) [![PyPI Package](https://img.shields.io/pypi/v/aim-cli?color=yellow)](https://pypi.org/project/aim-cli/) [![License](https://img.shields.io/badge/License-Apache%202.0-red.svg)](https://opensource.org/licenses/Apache-2.0)
+<img src="https://user-images.githubusercontent.com/13848158/97081166-8f568800-1611-11eb-991c-e9bc1344074e.png" height="95" />
 
 **A super-easy way to record, search and compare AI experiments.**
 
-> Check out a [LIVE DEMO](http://demo-1.aimstack.io:43900/explore?search=eyJjaGFydCI6eyJzZXR0aW5ncyI6eyJwZXJzaXN0ZW50Ijp7InlTY2FsZSI6MCwiem9vbU1vZGUiOmZhbHNlLCJ6b29tSGlzdG9yeSI6W10sInBlcnNpc3RlbnQiOnsieVNjYWxlIjowLCJ6b29tTW9kZSI6ZmFsc2UsInpvb21IaXN0b3J5IjpbXSwicGVyc2lzdGVudCI6eyJ5U2NhbGUiOjAsInpvb21Nb2RlIjpmYWxzZSwiem9vbUhpc3RvcnkiOltdLCJwZXJzaXN0ZW50Ijp7ImRpc3BsYXlPdXRsaWVycyI6ZmFsc2UsInpvb20iOm51bGwsImludGVycG9sYXRlIjpmYWxzZX0sImRpc3BsYXlPdXRsaWVycyI6ZmFsc2UsImludGVycG9sYXRlIjp0cnVlLCJ6b29tIjp7IjAiOnsieCI6WzIuNjg1MTczMTQ4MTA1MzM4NSwzOF0sInkiOlszLjQ1NDEwMDA0ODU0MjAyMywzLjY4MjMzOTM5NzAxNzAyOF19LCIxIjp7IngiOlsyLjUzNzIwNjUxMzA3NzU1NywzOF0sInkiOlsyNy42NzE5Nzg3NjM2MTk2ODQsMzIuNTgxOTk5Nzc4NzQ3NTZdfSwiMiI6eyJ4IjpbNi4xMzAwNzcxODU4MDYzMzIsMjddLCJ5IjpbMy40MzIxNTAwNTM5Nzc5NjYsMy42NDc3MDkzNTA2NzM4NjZdfSwiMyI6eyJ4IjpbMy40OTA5MDg3NzA3OTQyNDE0LDI3XSwieSI6WzI5LjE0MjQ0OTMzOTY5ODA4MiwzMy43NzI5OTk5NTQyMjM2MzZdfSwiNCI6eyJ4IjpbNC42OTMxNjM4MzkzNzM3MDgsMjhdLCJ5IjpbMjkuNDA5MjQ3MjgyOTAwMjY0LDMyLjEwMzk5OTcxMDA4MzAxXX0sIjUiOnsieCI6WzYuOTQxMTk3MDgwOTUyMjg1LDI3LjA0MTk0NTU0NjY2ODI2XSwieSI6WzMuNDgxNjAwMDgxOTIwNjI0LDMuNTgyNzgzODQ4MDA3ODUzOF19fX0sInpvb20iOm51bGx9LCJ6b29tIjpudWxsfX0sImZvY3VzZWQiOnsiY2lyY2xlIjp7ImFjdGl2ZSI6ZmFsc2UsInJ1bkhhc2giOm51bGwsIm1ldHJpY05hbWUiOm51bGwsInRyYWNlQ29udGV4dCI6bnVsbCwic3RlcCI6bnVsbH19fSwic2VhcmNoIjp7InF1ZXJ5IjoiYmxldSBpZiBjb250ZXh0LnN1YnNldCA9PSB0ZXN0IGFuZCBocGFyYW1zLmxlYXJuaW5nX3JhdGUgPiAwLjAwMDAxIiwidiI6MX0sImNvbnRleHRGaWx0ZXIiOnsiZ3JvdXBCeVN0eWxlIjpbXSwiZ3JvdXBCeUNvbG9yIjpbInBhcmFtcy5ocGFyYW1zLmFsaWduIiwicGFyYW1zLmhwYXJhbXMubWF4X2siLCJwYXJhbXMuZGF0YXNldC5wcmVwcm9jIl0sImFnZ3JlZ2F0ZWQiOnRydWUsImdyb3VwQnlDaGFydCI6WyJwYXJhbXMuaHBhcmFtcy5tYXhfayIsInBhcmFtcy5ocGFyYW1zLmFsaWduIl19fQ==) and a quick [VIDEO](https://www.youtube.com/watch?v=TeAkyRIMxx4&ab_channel=Aim) on what you can achieve with Aim.
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/aim-cli)](https://pypi.org/project/aim-cli/)
+[![PyPI Package](https://img.shields.io/pypi/v/aim-cli?color=yellow)](https://pypi.org/project/aim-cli/)
+[![Downloads](https://img.shields.io/docker/pulls/aimhubio/aim-board)](https://hub.docker.com/r/aimhubio/aim-board)
+[![License](https://img.shields.io/badge/License-Apache%202.0-orange.svg)](https://opensource.org/licenses/Apache-2.0)
 
-<img src="https://user-images.githubusercontent.com/13848158/95088468-0fd14980-0734-11eb-8137-698afa2f3a5d.png">
+<a href="https://join.slack.com/t/aimstack/shared_invite/zt-jhlp5og5-jw5TnkWBfjVrrGXLsdMOBw">
+  <img src="https://user-images.githubusercontent.com/13848158/100350405-45dbcd00-3003-11eb-8fde-2f7b1822271b.png" height="35" />
+</a>
+
+---
+
+<h6 style="color: grey">
+  <a href="http://play.aimstack.io:43900/explore?search=eyJjaGFydCI6eyJzZXR0aW5ncyI6eyJwZXJzaXN0ZW50Ijp7InlTY2FsZSI6MCwiem9vbU1vZGUiOmZhbHNlLCJ6b29tSGlzdG9yeSI6W10sInBlcnNpc3RlbnQiOnsieVNjYWxlIjowLCJ6b29tTW9kZSI6ZmFsc2UsInpvb21IaXN0b3J5IjpbXSwicGVyc2lzdGVudCI6eyJ5U2NhbGUiOjAsInpvb21Nb2RlIjpmYWxzZSwiem9vbUhpc3RvcnkiOltdLCJwZXJzaXN0ZW50Ijp7ImRpc3BsYXlPdXRsaWVycyI6ZmFsc2UsInpvb20iOm51bGwsImludGVycG9sYXRlIjpmYWxzZX0sImRpc3BsYXlPdXRsaWVycyI6ZmFsc2UsImludGVycG9sYXRlIjp0cnVlLCJ6b29tIjp7IjAiOnsieCI6WzIuNjg1MTczMTQ4MTA1MzM4NSwzOF0sInkiOlszLjQ1NDEwMDA0ODU0MjAyMywzLjY4MjMzOTM5NzAxNzAyOF19LCIxIjp7IngiOlsyLjUzNzIwNjUxMzA3NzU1NywzOF0sInkiOlsyNy42NzE5Nzg3NjM2MTk2ODQsMzIuNTgxOTk5Nzc4NzQ3NTZdfSwiMiI6eyJ4IjpbNi4xMzAwNzcxODU4MDYzMzIsMjddLCJ5IjpbMy40MzIxNTAwNTM5Nzc5NjYsMy42NDc3MDkzNTA2NzM4NjZdfSwiMyI6eyJ4IjpbMy40OTA5MDg3NzA3OTQyNDE0LDI3XSwieSI6WzI5LjE0MjQ0OTMzOTY5ODA4MiwzMy43NzI5OTk5NTQyMjM2MzZdfSwiNCI6eyJ4IjpbNC42OTMxNjM4MzkzNzM3MDgsMjhdLCJ5IjpbMjkuNDA5MjQ3MjgyOTAwMjY0LDMyLjEwMzk5OTcxMDA4MzAxXX0sIjUiOnsieCI6WzYuOTQxMTk3MDgwOTUyMjg1LDI3LjA0MTk0NTU0NjY2ODI2XSwieSI6WzMuNDgxNjAwMDgxOTIwNjI0LDMuNTgyNzgzODQ4MDA3ODUzOF19fX0sInpvb20iOm51bGx9LCJ6b29tIjpudWxsLCJkaXNwbGF5T3V0bGllcnMiOmZhbHNlLCJpbnRlcnBvbGF0ZSI6dHJ1ZX19LCJmb2N1c2VkIjp7ImNpcmNsZSI6eyJhY3RpdmUiOmZhbHNlLCJydW5IYXNoIjpudWxsLCJtZXRyaWNOYW1lIjpudWxsLCJ0cmFjZUNvbnRleHQiOm51bGwsInN0ZXAiOm51bGx9fX0sInNlYXJjaCI6eyJxdWVyeSI6ImJsZXUgaWYgY29udGV4dC5zdWJzZXQgPT0gdGVzdCBhbmQgaHBhcmFtcy5sZWFybmluZ19yYXRlID4gMC4wMDAwMSIsInYiOjF9LCJjb250ZXh0RmlsdGVyIjp7Imdyb3VwQnlDb2xvciI6WyJwYXJhbXMuaHBhcmFtcy5hbGlnbiIsInBhcmFtcy5ocGFyYW1zLm1heF9rIiwicGFyYW1zLmRhdGFzZXQucHJlcHJvYyJdLCJncm91cEJ5Q2hhcnQiOlsicGFyYW1zLmhwYXJhbXMuYWxpZ24iXSwiZ3JvdXBCeVN0eWxlIjpbXSwiYWdncmVnYXRlZCI6dHJ1ZX19">PLAY</a> 
+  with live demo and check out a short 
+  <a href="https://www.youtube.com/watch?v=TeAkyRIMxx4&ab_channel=Aim">INTRO VIDEO</a> 
+</h6>
+
+<br />
+
+<img src="https://user-images.githubusercontent.com/13848158/100094828-0b432a80-2e73-11eb-808a-56cf4cdf32ef.png" />
+
+<br />
+
+<h6 style="color: grey">Integrate seamlessly with your favorite tools</h6>
+
+<img src="https://user-images.githubusercontent.com/13848158/96861310-f7239c00-1474-11eb-82a4-4fa6eb2c6bb1.jpg" width="100" />
+<img src="https://user-images.githubusercontent.com/13848158/97086626-8b3c6180-1635-11eb-9e90-f215b898e298.png" width="100" />
+<img src="https://user-images.githubusercontent.com/13848158/96859323-6ba90b80-1472-11eb-9a6e-c60a90f11396.jpg" width="100" />
+<img src="https://user-images.githubusercontent.com/13848158/96861315-f854c900-1474-11eb-8e9d-c7a07cda8445.jpg" width="100" />
+
+</div>
 
 ## Getting started in three steps
-1. Install Aim in your training environment and init in the project folder
+
+> **1. Install Aim in your training environment**
 ```shell
-$ pip3 install aim-cli
+$ pip install aim
 ```
-2. Import Aim in your training code
-```py
+
+> **2. Integrate Aim with your code**
+
+<details open>
+<summary>
+  Flexible integration for any Python script
+</summary>
+
+```python
 import aim
+
+# Save inputs, hparams or any other `key: value` pairs
+aim.set_params(hyperparam_dict, name='hparams') # Passing name argument is optional
+
 ...
-aim.set_params(hyperparam_dict, name='params_name')
-aim.track(metric_value, name='metric_name', epoch=the_epoch_value)
+for step in range(10):
+    # Log metrics to visualize performance
+    aim.track(metric_value, name='metric_name', epoch=epoch_number)
 ...
 ```
-3. Run the training like you are used to and start the AI Dev Environment
+
+_See documentation [here](#python-library)._
+
+</details>
+
+<details>
+<summary>
+  PyTorch Lightning integration
+</summary>
+
+```python
+from aim.pytorch_lightning import AimLogger
+
+...
+trainer = pl.Trainer(logger=AimLogger(experiment='experiment_name'))
+...
+```
+
+_See documentation [here](#pytorch-lightning)._
+
+</details>
+
+<details>
+<summary>
+  Keras & tf.keras integrations
+</summary>
+
+```python
+import aim
+
+# Save inputs, hparams or any other `key: value` pairs
+aim.set_params(param_dict, name='params_name') # Passing name argument is optional
+
+...
+model.fit(x_train, y_train, epochs=epochs, callbacks=[
+    aim.keras.AimCallback(aim.Session(experiment='experiment_name'))
+    
+    # Use aim.tensorflow.AimCallback in case of tf.keras
+    aim.tensorflow.AimCallback(aim.Session(experiment='experiment_name'))
+])
+...
+```
+
+_See documentation [here](#tensorflow-and-keras)._
+
+</details>
+
+> **3. Run the training like you are used to and start Aim UI**
 ```shell
 $ aim up
 ```
@@ -40,6 +128,7 @@ $ aim up
     - [aim.Session()](#session)
   - [Automatic Tracking](#automatic-tracking)
     - [TensorFlow and Keras](#tensorflow-and-keras)
+    - [PyTorch Lightning](#pytorch-lightning)
   - [Searching Experiments](#searching-experiments)
     - [Search Examples](#search-examples)
   - [Command Line Interface](#command-line-interface)
@@ -57,9 +146,9 @@ $ aim up
 To install Aim, you need to have python3 and pip3 installed in your environment
 1. Install Aim python package
 ```shell
-$ pip3 install aim-cli
+$ pip install aim
 ```
-In order to start Aim Development Environment you need to have Docker installed.
+In order to start Aim UI you need to have Docker installed.
 ```shell
 $ aim up
 ```
@@ -108,7 +197,7 @@ loss if context.subset == train and context.dataset in (train_1) # Retrieve all 
 ```
 Please note that any key-value could be used to track this way and enhance the context of metrics and enable even more detailed search.
 
-Search by context example [here](http://demo-1.aimstack.io/explore?search=eyJjaGFydCI6eyJzZXR0aW5ncyI6eyJwZXJzaXN0ZW50Ijp7InlTY2FsZSI6MCwiem9vbU1vZGUiOmZhbHNlLCJ6b29tSGlzdG9yeSI6W10sInBlcnNpc3RlbnQiOnsieVNjYWxlIjowLCJ6b29tTW9kZSI6ZmFsc2UsInpvb21IaXN0b3J5IjpbXSwicGVyc2lzdGVudCI6eyJkaXNwbGF5T3V0bGllcnMiOmZhbHNlLCJ6b29tIjpudWxsLCJpbnRlcnBvbGF0ZSI6ZmFsc2V9LCJ6b29tIjpudWxsfSwiem9vbSI6bnVsbH19LCJmb2N1c2VkIjp7ImNpcmNsZSI6eyJhY3RpdmUiOmZhbHNlLCJydW5IYXNoIjpudWxsLCJtZXRyaWNOYW1lIjpudWxsLCJ0cmFjZUNvbnRleHQiOm51bGwsInN0ZXAiOm51bGx9fX0sInNlYXJjaCI6eyJxdWVyeSI6Imxvc3MgaWYgcGFyYW1zLmxlYXJuaW5nX3JhdGUgPj0gMC4wMSBhbmQgY29udGV4dC5zdWJzZXQgaW4gKHZhbCwgdHJhaW4pIiwidiI6MX0sImNvbnRleHRGaWx0ZXIiOnsiYWdncmVnYXRlZCI6ZmFsc2UsImdyb3VwQnlDb2xvciI6W10sImdyb3VwQnlTdHlsZSI6W10sImdyb3VwQnlDaGFydCI6W119fQ==):
+Search by context example [here](http://play.aimstack.io/explore?search=eyJjaGFydCI6eyJzZXR0aW5ncyI6eyJwZXJzaXN0ZW50Ijp7InlTY2FsZSI6MCwiem9vbU1vZGUiOmZhbHNlLCJ6b29tSGlzdG9yeSI6W10sInBlcnNpc3RlbnQiOnsieVNjYWxlIjowLCJ6b29tTW9kZSI6ZmFsc2UsInpvb21IaXN0b3J5IjpbXSwicGVyc2lzdGVudCI6eyJkaXNwbGF5T3V0bGllcnMiOmZhbHNlLCJ6b29tIjpudWxsLCJpbnRlcnBvbGF0ZSI6ZmFsc2V9LCJ6b29tIjpudWxsfSwiem9vbSI6bnVsbH19LCJmb2N1c2VkIjp7ImNpcmNsZSI6eyJhY3RpdmUiOmZhbHNlLCJydW5IYXNoIjpudWxsLCJtZXRyaWNOYW1lIjpudWxsLCJ0cmFjZUNvbnRleHQiOm51bGwsInN0ZXAiOm51bGx9fX0sInNlYXJjaCI6eyJxdWVyeSI6Imxvc3MgaWYgcGFyYW1zLmxlYXJuaW5nX3JhdGUgPj0gMC4wMSBhbmQgY29udGV4dC5zdWJzZXQgaW4gKHZhbCwgdHJhaW4pIiwidiI6MX0sImNvbnRleHRGaWx0ZXIiOnsiYWdncmVnYXRlZCI6ZmFsc2UsImdyb3VwQnlDb2xvciI6W10sImdyb3VwQnlTdHlsZSI6W10sImdyb3VwQnlDaGFydCI6W119fQ==):
 
 ### set_params
 aim.**set_params**_(dict_value, name) <sub>[source](https://github.com/aimhubio/aim/blob/6ef09d8d77c517728978703764fc9ffe323f12b0/aim/sdk/track.py#L11)</sub>_
@@ -132,16 +221,22 @@ loss if params.learning_rate == 0.0001 and params.batch_size == 32 # all the run
 ```
 **_Note:_** if the `set_params` is called several times with the same name all the dictionaries will add up in one place on the UI.
 
+### flush
+aim.**flush**_() <sub>[source](https://github.com/aimhubio/aim/blob/develop/aim/sdk/flush.py#L4)</sub>_
+
+Aim calculates intermediate values of metrics for aggregation during tracking. This method is called at a given frequency(see [Session](#session)) and at the end of the run automatically. Use this command to flush those values to disk manually.
+ 
 ### Session
 Use Session to specify custom `.aim` directory or the experiment from the code.
 
-_Class_ aim.**Session**_([repo,] [experiment])<sub>[source](https://github.com/aimhubio/aim/blob/develop/aim/sdk/session/session.py)</sub>_
-
-Create session to specify the repo location and/or the experiment.
+_Class_ aim.**Session**_()<sub>[source](https://github.com/aimhubio/aim/blob/develop/aim/sdk/session/session.py)</sub>_
 
 _Parameters_
-- **repo** - Full path to parent directory of Aim repo - the `.aim` directory
-- **experiment** - A name of the experiment. See [concepts](#concepts)
+- **repo** - Full path to parent directory of Aim repo - the `.aim` directory. By default current working directory.
+- **experiment** - A name of the experiment. By default `default`. See [concepts](#concepts)
+- **flush_frequency** - The frequency per step to flush intermediate aggregated values of metrics to disk. By default per `128` step.
+- **block_termination** - If set to `True` process will wait until all tasks are completed, otherwise pending tasks will be killed at process exit. By default `True`.
+- **run** - A name of the run. If run name is not specified, universally unique identifier will be generated.
 
 _Returns_
 - Session object to attribute recorded training run to.
@@ -151,6 +246,8 @@ _Methods_
 - [`track()`](#track) - Tracks metrics within the session
 
 - [`set_params()`](#set_params) - Sets session params
+
+- [`flush()`](#flush) - Flushes intermediate aggregated metrics to disk. This method is called at a given frequency and at the end of the run automatically.
 
 - `close()` - Closes the session. If not invoked, the session will be automatically closed when the training is done.
 
@@ -164,12 +261,57 @@ Automatic tracking allows you to track metrics without the need for explicit tra
 
 ### TensorFlow and Keras
 
-Pass an instance of `AimTracker.metrics([session])` to keras callbacks.
+Pass an instance of `aim.tensorflow.AimCallback` to the trainer callbacks list.
+
+**_Note:_** Logging for pure `keras` is handled by `aim.keras.AimCallback`
 
 _Parameters_
-- **session** - Aim Session instance(optional)
+- **session** - Aim Session instance (optional)
 
-- [Here](https://github.com/aimhubio/aim/blob/develop/examples/keras_track.py#L67) is an example
+_Examples_
+
+```python
+from aim import Session
+from aim.tensorflow import AimCallback 
+# Use `from aim.keras import AimCallback` in case of keras
+
+...
+aim_session = Session(experiment='experiment_name')
+model.fit(x_train, y_train, epochs=epochs, callbacks=[
+    AimCallback(aim_session)
+])
+...
+```
+
+> TensorFlow v1 full example [here](https://github.com/aimhubio/aim/blob/develop/examples/tensorflow_1_keras_track.py#L26) <br />
+> TensorFlow v2 full example [here](https://github.com/aimhubio/aim/blob/develop/examples/tensorflow_keras_track.py#L26) <br />
+> Keras full example [here](https://github.com/aimhubio/aim/blob/develop/examples/keras_track.py#L69)
+
+### PyTorch Lightning
+
+Pass `aim.pytorch_lightning.AimLogger` instance as logger to `pl.Trainer` to log metrics and parameters automatically.
+
+_Parameters_
+- **repo** - Full path to parent directory of Aim repo - the `.aim` directory (optional)
+- **experiment** - A name of the experiment (optional)
+- **train_metric_prefix** - The prefix of metrics names collected in the training loop. By default `train_` (optional)
+- **test_metric_prefix** - The prefix of metrics names collected in the test loop. By default `test_` (optional)
+- **val_metric_prefix** - The prefix of metrics names collected in the validation loop. By default `val_` (optional)
+- **flush_frequency** - The frequency per step to flush intermediate aggregated values of metrics to disk. By default per `128` step. (optional)
+
+_Examples_
+
+```python
+from aim.pytorch_lightning import AimLogger
+
+...
+aim_logger = AimLogger(experiment='pt_lightning_exp')
+trainer = pl.Trainer(logger=aim_logger)
+trainer.fit(model, train_loader, val_loader)
+...
+```
+
+> Full example [here](https://github.com/aimhubio/aim/blob/develop/examples/pytorch_lightning_track.py)
 
 ## Searching Experiments
 [AimQL](https://github.com/aimhubio/aim/wiki/Aim-Query-Language) is a super simple, python-like search that enables rich search capabilities to search experiments.
@@ -186,7 +328,7 @@ Here are the ways you can search on Aim:
 - Display the train loss of experiments whose learning rate is greater than 0.0001:
   - `loss if context.subset == train and params.learning_rate > 0.0001`
 
-Check out this demo [dev-environment](http://demo-1.aimstack.io/explore?search=eyJjaGFydCI6eyJzZXR0aW5ncyI6eyJwZXJzaXN0ZW50Ijp7InlTY2FsZSI6MCwiem9vbU1vZGUiOmZhbHNlLCJ6b29tSGlzdG9yeSI6W10sInBlcnNpc3RlbnQiOnsieVNjYWxlIjowLCJ6b29tTW9kZSI6ZmFsc2UsInpvb21IaXN0b3J5IjpbXSwicGVyc2lzdGVudCI6eyJ5U2NhbGUiOjAsInpvb21Nb2RlIjpmYWxzZSwiem9vbUhpc3RvcnkiOltdLCJwZXJzaXN0ZW50Ijp7ImRpc3BsYXlPdXRsaWVycyI6ZmFsc2UsInpvb20iOm51bGwsImludGVycG9sYXRlIjpmYWxzZX0sInpvb20iOm51bGx9LCJ6b29tIjpudWxsfSwiem9vbSI6bnVsbH19LCJmb2N1c2VkIjp7ImNpcmNsZSI6eyJhY3RpdmUiOmZhbHNlLCJydW5IYXNoIjpudWxsLCJtZXRyaWNOYW1lIjpudWxsLCJ0cmFjZUNvbnRleHQiOm51bGwsInN0ZXAiOm51bGx9fX0sInNlYXJjaCI6eyJxdWVyeSI6Imxvc3MgaWYgcGFyYW1zLmxlYXJuaW5nX3JhdGUgPiAwLjAxIG9yIG5ldC5jb252MV9zaXplID09IDY0IiwidiI6MX0sImNvbnRleHRGaWx0ZXIiOnsiYWdncmVnYXRlZCI6ZmFsc2UsImdyb3VwQnlDb2xvciI6W10sImdyb3VwQnlTdHlsZSI6W10sImdyb3VwQnlDaGFydCI6W119fQ==) deployment to play around with search.
+Check out this demo [project](http://play.aimstack.io/explore?search=eyJjaGFydCI6eyJzZXR0aW5ncyI6eyJwZXJzaXN0ZW50Ijp7InlTY2FsZSI6MCwiem9vbU1vZGUiOmZhbHNlLCJ6b29tSGlzdG9yeSI6W10sInBlcnNpc3RlbnQiOnsieVNjYWxlIjowLCJ6b29tTW9kZSI6ZmFsc2UsInpvb21IaXN0b3J5IjpbXSwicGVyc2lzdGVudCI6eyJ5U2NhbGUiOjAsInpvb21Nb2RlIjpmYWxzZSwiem9vbUhpc3RvcnkiOltdLCJwZXJzaXN0ZW50Ijp7ImRpc3BsYXlPdXRsaWVycyI6ZmFsc2UsInpvb20iOm51bGwsImludGVycG9sYXRlIjpmYWxzZX0sInpvb20iOm51bGx9LCJ6b29tIjpudWxsfSwiem9vbSI6bnVsbH19LCJmb2N1c2VkIjp7ImNpcmNsZSI6eyJhY3RpdmUiOmZhbHNlLCJydW5IYXNoIjpudWxsLCJtZXRyaWNOYW1lIjpudWxsLCJ0cmFjZUNvbnRleHQiOm51bGwsInN0ZXAiOm51bGx9fX0sInNlYXJjaCI6eyJxdWVyeSI6Imxvc3MgaWYgcGFyYW1zLmxlYXJuaW5nX3JhdGUgPiAwLjAxIG9yIG5ldC5jb252MV9zaXplID09IDY0IiwidiI6MX0sImNvbnRleHRGaWx0ZXIiOnsiYWdncmVnYXRlZCI6ZmFsc2UsImdyb3VwQnlDb2xvciI6W10sImdyb3VwQnlTdHlsZSI6W10sImdyb3VwQnlDaGFydCI6W119fQ==) deployment to play around with search.
 
 ## Command Line Interface
 
@@ -245,12 +387,14 @@ $ aim up [ARGS]
 
 | Args                              | Description                                               |
 | --------------------------------- | --------------------------------------------------------- |
-| `-p` &#124; `--port <port>`       | Specify port to listen to.                                |
 | `-h` &#124; `--host <host>`       | Specify host address.                                     |
+| `-p` &#124; `--port <port>`       | Specify port to listen to.                                |
 | `-v` &#124; `--version <version>` | Version of Aim UI to run. Default `latest`.               |
-| `--tf_logs <logs_dir_path>`       | Use Aim to search cand compare TensorBoard experiments. More details in [TensorBoard Experiments](#tensorboard-experiments)|
+| `--repo <repo_path>`              | Path to parent directory of `.aim` repo. _Current working directory by default_ |
+| `-d` &#124; `--detach`            | Run Aim UI in detached mode.                             |
+| `--tf_logs <logs_dir_path>`       | Use Aim to search and compare TensorBoard experiments. More details in [TensorBoard Experiments](#tensorboard-experiments) |
 
-***Disclaimer:*** UI uses docker container to run and having docker installed in the training environment is mandatory for UI to run.
+***Disclaimer:*** UI uses docker container to run and having docker installed in the training environment is mandatory for the UI to run.
 Most of the environments nowadays have docker preinstalled or installed for other purposes so this should not be a huge obstacle to get started with Aim UI.
 
 ***Please make sure to run `aim up` in the directory where `.aim` is located.***
@@ -258,8 +402,12 @@ Most of the environments nowadays have docker preinstalled or installed for othe
 ### down
 Turn off Aim UI manually:
 ```shell
-$ aim down
+$ aim down [ARGS]
 ```
+
+| Args                              | Description                                               |
+| --------------------------------- | --------------------------------------------------------- |
+| `--repo <repo_path>`              | Path to parent directory of `.aim` repo. _Current working directory by default_ |
 
 ### upgrade
 Upgrade Aim UI to its latest version:
@@ -281,4 +429,4 @@ $ aim up --tf_logs path/to/logs
 This command will spin up Aim on the TensorFlow summary logs and load the logs recursively from the given path.
 Use `tf:` prefix to select and display metrics logged with tf.summary in the dashboard, for example `tf:accuracy`.
 
-Tensorboard search example [here](http://demo-1.aimstack.io/explore?search=eyJjaGFydCI6eyJzZXR0aW5ncyI6eyJwZXJzaXN0ZW50Ijp7InlTY2FsZSI6MCwiem9vbU1vZGUiOmZhbHNlLCJ6b29tSGlzdG9yeSI6W10sInBlcnNpc3RlbnQiOnsieVNjYWxlIjowLCJ6b29tTW9kZSI6ZmFsc2UsInpvb21IaXN0b3J5IjpbXSwicGVyc2lzdGVudCI6eyJ5U2NhbGUiOjAsInpvb21Nb2RlIjpmYWxzZSwiem9vbUhpc3RvcnkiOltdLCJwZXJzaXN0ZW50Ijp7InlTY2FsZSI6MCwiem9vbU1vZGUiOmZhbHNlLCJ6b29tSGlzdG9yeSI6W10sInBlcnNpc3RlbnQiOnsiZGlzcGxheU91dGxpZXJzIjpmYWxzZSwiem9vbSI6bnVsbCwiaW50ZXJwb2xhdGUiOmZhbHNlfSwiem9vbSI6bnVsbH0sInpvb20iOm51bGx9LCJ6b29tIjpudWxsfSwiem9vbSI6bnVsbCwiZGlzcGxheU91dGxpZXJzIjpmYWxzZX19LCJmb2N1c2VkIjp7ImNpcmNsZSI6eyJhY3RpdmUiOmZhbHNlLCJydW5IYXNoIjpudWxsLCJtZXRyaWNOYW1lIjpudWxsLCJ0cmFjZUNvbnRleHQiOm51bGwsInN0ZXAiOm51bGx9fX0sInNlYXJjaCI6eyJxdWVyeSI6Imxvc3MsIHRmOmFjY3VyYWN5IGlmIHBhcmFtcy5sZWFybmluZ19yYXRlID4gMC4wMSBvciBuZXQuY29udjFfc2l6ZSA9PSA2NCBvciBwYXJhbXMudGZfbGVhcm5pbmdfcmF0ZSA9PSAwLjAwMSIsInYiOjF9LCJjb250ZXh0RmlsdGVyIjp7ImFnZ3JlZ2F0ZWQiOmZhbHNlLCJncm91cEJ5Q29sb3IiOltdLCJncm91cEJ5U3R5bGUiOltdLCJncm91cEJ5Q2hhcnQiOlsiZXhwZXJpbWVudCJdfX0=)
+Tensorboard search example [here](http://play.aimstack.io/explore?search=eyJjaGFydCI6eyJzZXR0aW5ncyI6eyJwZXJzaXN0ZW50Ijp7InlTY2FsZSI6MCwiem9vbU1vZGUiOmZhbHNlLCJ6b29tSGlzdG9yeSI6W10sInBlcnNpc3RlbnQiOnsieVNjYWxlIjowLCJ6b29tTW9kZSI6ZmFsc2UsInpvb21IaXN0b3J5IjpbXSwicGVyc2lzdGVudCI6eyJ5U2NhbGUiOjAsInpvb21Nb2RlIjpmYWxzZSwiem9vbUhpc3RvcnkiOltdLCJwZXJzaXN0ZW50Ijp7InlTY2FsZSI6MCwiem9vbU1vZGUiOmZhbHNlLCJ6b29tSGlzdG9yeSI6W10sInBlcnNpc3RlbnQiOnsiZGlzcGxheU91dGxpZXJzIjpmYWxzZSwiem9vbSI6bnVsbCwiaW50ZXJwb2xhdGUiOmZhbHNlfSwiem9vbSI6bnVsbH0sInpvb20iOm51bGx9LCJ6b29tIjpudWxsfSwiem9vbSI6bnVsbCwiZGlzcGxheU91dGxpZXJzIjpmYWxzZX19LCJmb2N1c2VkIjp7ImNpcmNsZSI6eyJhY3RpdmUiOmZhbHNlLCJydW5IYXNoIjpudWxsLCJtZXRyaWNOYW1lIjpudWxsLCJ0cmFjZUNvbnRleHQiOm51bGwsInN0ZXAiOm51bGx9fX0sInNlYXJjaCI6eyJxdWVyeSI6Imxvc3MsIHRmOmFjY3VyYWN5IGlmIHBhcmFtcy5sZWFybmluZ19yYXRlID4gMC4wMSBvciBuZXQuY29udjFfc2l6ZSA9PSA2NCBvciBwYXJhbXMudGZfbGVhcm5pbmdfcmF0ZSA9PSAwLjAwMSIsInYiOjF9LCJjb250ZXh0RmlsdGVyIjp7ImFnZ3JlZ2F0ZWQiOmZhbHNlLCJncm91cEJ5Q29sb3IiOltdLCJncm91cEJ5U3R5bGUiOltdLCJncm91cEJ5Q2hhcnQiOlsiZXhwZXJpbWVudCJdfX0=)

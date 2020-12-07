@@ -1,4 +1,6 @@
 import os
+import json
+from typing import Optional, Union, Dict, Tuple, List
 from copy import deepcopy
 from functools import reduce
 from random import choice
@@ -26,6 +28,11 @@ def deep_merge(*dicts, update=False):
         return reduce(merge_into, dicts, {})
 
 
+def deep_compare(a, b, order_matters=True):
+    return json.dumps(a) == json.dumps(b)
+    # TODO: Implement deep comparison not taking into account ordering
+
+
 def is_path_creatable(path):
     """
     `True` if current user has sufficient permissions to create the passed
@@ -49,11 +56,65 @@ def ls_dir(paths):
         return [paths[0]] + (ls_dir(paths[1:]) if len(paths) > 1 else [])
 
 
+def get_dict_item_by_path(haystack, path):
+    sub_haystack = haystack
+    for token in path.split('.'):
+        if isinstance(sub_haystack, dict) and token in sub_haystack.keys():
+            sub_haystack = sub_haystack[token]
+        else:
+            break
+    else:
+        return sub_haystack
+    return None
+
+
+def contexts_equal(a: Optional[Union[Dict, Tuple, List]],
+                   b: Optional[Union[Dict, Tuple, List]]):
+    if a is None and b is None:
+        return True
+    if a is None or b is None:
+        return False
+
+    if isinstance(a, dict):
+        a = tuple(sorted(a.items()))
+
+    if isinstance(b, dict):
+        b = tuple(sorted(b.items()))
+
+    if not isinstance(a, (dict, tuple, list)) \
+            or not isinstance(b, (dict, tuple, list)):
+        raise TypeError()
+
+    if len(a) != len(b):
+        return False
+
+    for other_k, other_v in a:
+        for k, v in b:
+            if k == other_k and v == other_v:
+                break
+        else:
+            return False
+    return True
+
+
 def random_str(string_length=10):
     """
     Generate a random string of fixed length
     """
     return ''.join(choice(ascii_letters) for _ in range(string_length))
+
+
+def compressed_dict(item):
+    stack = list(item.items())
+    ans = {}
+    while stack:
+        key, val = stack.pop()
+        if isinstance(val, dict):
+            for sub_key, sub_val in val.items():
+                stack.append(('{}.{}'.format(key, sub_key), sub_val))
+        else:
+            ans[key] = val
+    return ans
 
 
 def get_inst_type_str(inst):
@@ -145,11 +206,46 @@ def is_pytorch_optim(inst):
     return inst_has_typename(inst, ['torch', 'optim'])
 
 
+def is_pytorch_tensor(inst):
+    """
+    Check whether `inst` is instance of pytorch tensor
+    """
+    return inst_has_typename(inst, ['torch', 'Tensor'])
+
+
 def is_numpy_array(inst):
     """
     Check whether `inst` is instance of numpy array
     """
     return inst_has_typename(inst, ['numpy', 'ndarray'])
+
+
+def is_numpy_number(inst):
+    """
+    Check whether `inst` is numpy number and convert to python native type
+    """
+    if inst_has_typename(inst, ['numpy']):
+        converted_val = inst.item()
+        if isinstance(converted_val, (int, float)):
+            return True, converted_val
+    return False, None
+
+
+def convert_to_py_number(value):
+    """
+    Converts numpy objects or tensors to python number types
+    """
+    if isinstance(value, (int, float)):
+        return value
+
+    np_number, converted_val = is_numpy_number(value)
+    if np_number:
+        return converted_val
+
+    if is_pytorch_tensor(value):
+        return value.item()
+
+    return value
 
 
 def get_module(name, required=True):
@@ -177,3 +273,22 @@ def archive_dir(zip_path, dir_path):
 
     # Remove model directory
     shutil.rmtree(dir_path)
+
+
+def clean_repo_path(repo_path: str) -> str:
+    if not isinstance(repo_path, str) or not repo_path:
+        return ''
+
+    repo_path = repo_path.strip().rstrip('/')
+
+    if repo_path == '.':
+        return os.getcwd()
+    if repo_path == '~':
+        return os.path.expanduser('~')
+
+    if repo_path.endswith('.aim'):
+        repo_path = repo_path[:-4]
+    if repo_path.startswith('~'):
+        repo_path = os.path.expanduser('~') + repo_path[1:]
+
+    return os.path.abspath(repo_path)

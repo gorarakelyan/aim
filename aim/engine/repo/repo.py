@@ -10,10 +10,15 @@ from typing import List, Optional, Union, Tuple
 from aim.__version__ import __version__ as aim_version
 from aim.engine.configs import *
 from aim.engine.utils import (
-    ls_dir, import_module,
+    ls_dir,
+    deep_compare,
+    import_module,
+    clean_repo_path,
+    get_dict_item_by_path,
 )
 from aim.engine.profile import AimProfile
 from aim.engine.repo.run import Run
+from aim.engine.repo.dql.select import SelectResult
 from aim.engine.repo.utils import (
     cat_to_dir,
     get_experiment_path,
@@ -32,7 +37,9 @@ class AimRepo:
     READING_MODE = 'r'
 
     @staticmethod
-    def get_working_repo(*args, **kwargs):
+    def get_working_repo(*args,
+                         initialized_only=False,
+                         **kwargs):
         """
         Searches for .aim repository in working directory
         and returns AimRepo object if exists
@@ -46,7 +53,11 @@ class AimRepo:
             if len(working_dir) <= 1:
                 break
 
-            if os.path.exists(os.path.join(working_dir, AIM_REPO_NAME)):
+            repo_path = os.path.join(working_dir, AIM_REPO_NAME)
+            config_file_path = os.path.join(repo_path, AIM_CONFIG_FILE_NAME)
+
+            if (not initialized_only and os.path.exists(repo_path)) \
+                    or (initialized_only and os.path.isfile(config_file_path)):
                 repo_found = True
                 break
             else:
@@ -72,8 +83,8 @@ class AimRepo:
 
     @classmethod
     def get_active_branch_if_exists(cls):
-        repo = cls.get_working_repo()
-        if repo:
+        repo = cls.get_working_repo(initialized_only=True)
+        if repo is not None:
             return repo.branch
         return None
 
@@ -82,12 +93,19 @@ class AimRepo:
                  repo_full_path=None,
                  mode=WRITING_MODE):
         self._config = {}
-        self.root_path = repo_full_path or path
+        path = clean_repo_path(path)
         self.path = repo_full_path or os.path.join(path, AIM_REPO_NAME)
         self.config_path = os.path.join(self.path, AIM_CONFIG_FILE_NAME)
         self.hash = hashlib.md5(self.path.encode('utf-8')).hexdigest()
-        self.name = self.root_path.split(os.sep)[-1]
+
         self.active_commit = repo_commit or AIM_COMMIT_INDEX_DIR_NAME
+        if re.match(r'^[A-Za-z0-9_\-]{2,}$', self.active_commit) is None:
+            raise ValueError('run name must be at least 2 characters ' +
+                             'and contain only latin letters, numbers, ' +
+                             'dash and underscore')
+
+        self.root_path = repo_full_path or path
+        self.name = self.root_path.split(os.sep)[-1]
 
         self.branch_path = None
         self.index_path = None
@@ -96,11 +114,29 @@ class AimRepo:
         self.records_storage = None
         self.mode = mode
 
-        if not repo_branch:
-            if self.config:
-                self.branch = self.config.get('active_branch')
+        active_exp = self.config.get('active_branch')
+
+        if repo_branch is not None:
+            experiment = repo_branch
+        elif active_exp is not None:
+            experiment = active_exp
         else:
-            self.branch = repo_branch
+            experiment = None
+
+        if experiment is not None:
+            run_full_path = get_experiment_run_path(self.path,
+                                                    experiment,
+                                                    self.active_commit)
+        else:
+            run_full_path = None
+
+        if self.active_commit != AIM_COMMIT_INDEX_DIR_NAME and run_full_path \
+                and os.path.exists(run_full_path):
+            raise ValueError(('run `{}` already exists' +
+                              '').format(self.active_commit))
+
+        if experiment is not None:
+            self.branch = experiment
 
     def __str__(self):
         return self.path
@@ -159,10 +195,8 @@ class AimRepo:
                 self.mode)
 
     def get_records_storage(self, path, mode):
-        aimrecords = import_module('aimrecords')
-        storage = aimrecords.Storage
-        storage_inst = storage(path, mode)
-        return storage_inst
+        from aimrecords import Storage
+        return Storage(path, mode)
 
     def close_records_storage(self):
         """
@@ -198,8 +232,8 @@ class AimRepo:
         """
         Initializes empty Aim repository
         """
-        # Return if repo exists
-        if os.path.exists(self.path):
+        # Return if repo exists and is initialized
+        if self.is_initialized():
             return True
 
         try:
@@ -230,9 +264,15 @@ class AimRepo:
 
     def exists(self):
         """
-        Checks whether Aim repository is initialized
+        Checks whether Aim repository is created
         """
         return os.path.exists(self.path)
+
+    def is_initialized(self):
+        """
+        Checks whether Aim repository is initialized
+        """
+        return os.path.exists(self.path) and os.path.isfile(self.config_path)
 
     def ls_files(self):
         """
@@ -240,26 +280,83 @@ class AimRepo:
         """
         return ls_dir([self.path])
 
-    def load_meta_file(self):
+    def reconstruct_meta_file(self):
+        """
+        Reconstruct meta file(`Metric` and `NestedMap` artifacts)
+        from tracked artifacts data.
+        NOTE: Only can be needed in very specific cases.
+        """
+        meta_file_content = {}
+
+        # Check if `NestedMap` were saved
+        map_path = os.path.join(self.objects_dir_path, 'map', 'dictionary.log')
+        if os.path.isfile(map_path):
+            meta_file_content['dictionary.log'] = {
+                'name': 'dictionary',
+                'type': ['map', 'nested_map'],
+                'data': None,
+                'data_path': 'map',
+            }
+
+        # Collect metrics meta info
+        metrics_info = self.records_storage.get_artifacts_names()
+        for metric_name, context_items in metrics_info.items():
+            meta_file_content[metric_name] = {
+                'name': metric_name,
+                'type': 'metrics',
+                'data': None,
+                'data_path': '__AIMRECORDS__',
+                'format': {
+                    'artifact_format': 'aimrecords',
+                    'record_format': 'protobuf',
+                },
+                'context': [list(c.items()) for c in context_items],
+            }
+        return meta_file_content
+
+    def load_meta_file(self, create_if_not_exist=True):
         if self.meta_file_content is None:
             if os.path.isfile(self.meta_file_path):
                 with open(self.meta_file_path, 'r+') as meta_file:
                     self.meta_file_content = json.loads(meta_file.read())
             else:
+                if not create_if_not_exist:
+                    self.meta_file_content = {}
+                    return
+
                 os.makedirs(os.path.dirname(self.meta_file_path), exist_ok=True)
                 self.meta_file_content = {}
                 with open(self.meta_file_path, 'w+') as meta_file:
                     meta_file.write(json.dumps(self.meta_file_content))
 
-    def update_meta_file(self, item_key, item_content, flush=True):
+    def update_meta_file(self, item_key, item_content, flush=1):
+        """
+        :param item_key: item key to insert or update
+        :param item_content: item value
+        :param flush: 0 not flush, 1 always flush, 2 flush on data update
+        """
         self.load_meta_file()
-        self.meta_file_content[item_key] = item_content
-        if flush:
+        if flush == 0:
+            self.meta_file_content[item_key] = item_content
+        elif flush == 1:
+            self.meta_file_content[item_key] = item_content
             self.flush_meta_file()
+        elif flush == 2:
+            updated = True
+            if item_key not in self.meta_file_content.keys():
+                # Item is not added to meta file yet
+                self.meta_file_content[item_key] = item_content
+            elif deep_compare(self.meta_file_content[item_key], item_content):
+                # Item is outdated
+                self.meta_file_content[item_key] = item_content
+            else:
+                updated = False
+            if updated:
+                self.flush_meta_file()
 
-    def flush_meta_file(self):
+    def flush_meta_file(self, content=None):
         with open(self.meta_file_path, 'w+') as meta_file:
-            meta_file.write(json.dumps(self.meta_file_content))
+            meta_file.write(json.dumps(content or self.meta_file_content))
 
     def store_dir(self, name, cat, data={}):
         """
@@ -311,7 +408,7 @@ class AimRepo:
             'type': self.get_artifact_cat(cat),
             'data': data,
             'data_path': cat_path,
-        })
+        }, 2)
 
         return {
             'path': os.path.join(cat_path, file_name),
@@ -325,24 +422,31 @@ class AimRepo:
         """
         self.load_meta_file()
 
-        self.meta_file_content.setdefault(name, {
-            'name': name,
-            'type': self.get_artifact_cat(cat),
-            'data': data,
-            'data_path': '__AIMRECORDS__',
-            'format': {
-                'artifact_format': artifact_format,
-                'record_format': binary_format,
-            },
-            'context': [],
-        })
-        if context is not None:
-            context_item = tuple(context.items())
-            if context_item not in self.meta_file_content[name]['context']:
-                self.meta_file_content[name]['context'].append(context_item)
+        flush = 0
 
-        # TODO: FLush effectively
-        self.flush_meta_file()
+        if name in self.meta_file_content.keys():
+            artifact_value = self.meta_file_content[name]
+        else:
+            flush = 1
+            artifact_value = {
+                'name': name,
+                'type': self.get_artifact_cat(cat),
+                'data': data,
+                'data_path': '__AIMRECORDS__',
+                'format': {
+                    'artifact_format': artifact_format,
+                    'record_format': binary_format,
+                },
+                'context': [],
+            }
+
+        if context is not None:
+            context_item = tuple(sorted(context.items()))
+            if context_item not in artifact_value['context']:
+                artifact_value['context'].append(context_item)
+                flush = 1
+
+        self.update_meta_file(name, artifact_value, flush)
 
         return {
             'name': name,
@@ -452,12 +556,12 @@ class AimRepo:
         dir_path = os.path.join(self.path, branch)
 
         if not re.match(r'^[A-Za-z0-9_\-]{2,}$', branch):
-            raise AttributeError('branch name must be at least 2 characters ' +
-                                 'and contain only latin letters, numbers, ' +
-                                 'dash and underscore')
+            raise AttributeError('experiment name must be at least ' +
+                                 '2 characters and contain only latin ' +
+                                 'letters, numbers, dash and underscore')
 
         # Save branch in repo config file
-        branches = self.config['branches']
+        branches = self.config.get('branches') or []
         for b in branches:
             if b.get('name') == branch:
                 raise AttributeError('branch {} already exists'.format(branch))
@@ -470,6 +574,7 @@ class AimRepo:
         branches.append({
             'name': branch,
         })
+        self.config['branches'] = branches
         self.save_config()
 
     def checkout_branch(self, branch):
@@ -484,7 +589,7 @@ class AimRepo:
                 self.save_config()
                 return
 
-        raise AttributeError('branch {} does not exist'.format(branch))
+        raise AttributeError('Experiment {} does not exist'.format(branch))
 
     def remove_branch(self, branch):
         """
@@ -503,7 +608,7 @@ class AimRepo:
                 break
 
         if not branch_exists:
-            raise AttributeError('branch {} does not exist'.format(branch))
+            raise AttributeError('Experiment {} does not exist'.format(branch))
 
         # Remove branch
         self.config['branches'] = list(filter(lambda i: i.get('name') != branch,
@@ -531,7 +636,7 @@ class AimRepo:
 
     def list_branch_commits(self, branch):
         """
-        Returns list of specified branches commits
+        Returns list of specified branch commits
         """
         branch_path = os.path.join(self.path, branch.strip())
 
@@ -539,9 +644,7 @@ class AimRepo:
         for i in os.listdir(branch_path):
             if os.path.isdir(os.path.join(branch_path, i)) \
                     and i != AIM_COMMIT_INDEX_DIR_NAME:
-
                 commits.append(i)
-
         return commits
 
     def is_index_empty(self):
@@ -549,9 +652,7 @@ class AimRepo:
         Returns `True` if index directory is empty and
         `False` otherwise
         """
-        if len(ls_dir([self.index_path])):
-            return False
-        return True
+        return not len(ls_dir([self.index_path]))
 
     def get_latest_vc_branch(self):
         """
@@ -660,16 +761,32 @@ class AimRepo:
 
         return True
 
-    def commit_finish(self):
-        index_dir = self.index_path
-        config_file_path = os.path.join(index_dir,
+    def get_run_config(self):
+        config_file_path = os.path.join(self.index_path,
                                         AIM_COMMIT_CONFIG_FILE_NAME)
+
+        if not os.path.isfile(config_file_path):
+            return None
 
         with open(config_file_path, 'r+') as config_file:
             try:
                 configs = json.loads(config_file.read())
             except:
-                configs = {}
+                configs = None
+
+        return configs
+
+    def is_run_finished(self) -> Optional[bool]:
+        run_config = self.get_run_config()
+        process = run_config.get('process') or {}
+        return process.get('finish')
+
+    def commit_finish(self):
+        index_dir = self.index_path
+        config_file_path = os.path.join(index_dir,
+                                        AIM_COMMIT_CONFIG_FILE_NAME)
+
+        configs = self.get_run_config() or {}
 
         curr_timestamp = int(time.time())
         configs['date'] = curr_timestamp
@@ -789,6 +906,90 @@ class AimRepo:
         commit_path = os.path.join(self.path, branch, commit)
         return ls_dir([commit_path])
 
+    def select(self,
+               select_fields: List[str] = [],
+               expression: Optional[
+                       Union[str,
+                             Expression,
+                             BinaryExpressionTree]] = None,
+               default_expression: Optional[
+                       Union[str,
+                             Expression,
+                             BinaryExpressionTree]] = None,
+               ):
+        select_result = SelectResult(select_fields)
+
+        runs = {
+            exp_name: [
+                Run(self, exp_name, run_hash)
+                for run_hash in self.list_branch_commits(exp_name)
+            ]
+            for exp_name in self.list_branches()
+        }
+
+        # Build expression tree
+        if expression:
+            expression = build_bet(expression)
+            expression.strict = True
+
+        if default_expression:
+            default_expression = build_bet(default_expression)
+            default_expression.strict = True
+            if expression:
+                expression.concat(default_expression)
+            else:
+                expression = default_expression
+
+        for experiment_runs in runs.values():
+            for run in experiment_runs:
+                # Dictionary representing all search fields
+                fields = {
+                    'experiment': run.experiment_name,
+                    'run': run.config,  # Run configs (date, name, archived etc)
+                    'params': run.params,  # Run parameters (`NestedMap`)
+                }
+                # Default parameters - those passed without namespace
+                default_params = {
+                    'params': (run.params.get(AIM_NESTED_MAP_DEFAULT) or {}),
+                }
+
+                # Search metrics
+                for metric_name, metric in run.get_all_metrics().items():
+                    fields['metric'] = metric_name
+                    for trace in metric.get_all_traces():
+                        fields['context'] = trace.context
+                        # Pass fields in descending order by priority
+                        if expression is None:
+                            res = True
+                        else:
+                            res = expression.match(fields,
+                                                   run.params,
+                                                   default_params)
+
+                        if res is not True:
+                            continue
+
+                        # Append trace data if metric is selected
+                        for select_field in select_fields:
+                            if select_field == metric_name:
+                                metric.append(trace)
+                                run.add(metric)
+                                break
+
+                        # Append run if either metric or param is selected
+                        for select_field in select_fields:
+                            if select_field == metric_name:
+                                select_result.append_run(run)
+                                break
+
+                            field_val = get_dict_item_by_path(run.params,
+                                                              select_field)
+                            if field_val is not None:
+                                select_result.append_run(run)
+                                break
+
+        return select_result
+
     def select_runs(self,
                     expression: Optional[
                            Union[str,
@@ -807,9 +1008,9 @@ class AimRepo:
             for exp_name in self.list_branches()
         }
 
-        matched_runs: List[Run] = []
+        matched_runs = []  # type: List[Run]
 
-        # Build expression trees
+        # Build expression tree
         if expression:
             expression = build_bet(expression)
             expression.strict = True
@@ -880,7 +1081,7 @@ class AimRepo:
             for exp_name in self.list_branches()
         }
 
-        matched_runs: List[Run] = []
+        matched_runs = []  # type: List[Run]
 
         expression = build_bet(expression)
         expression.strict = True
@@ -978,17 +1179,19 @@ class AimRepo:
         return None
 
     def select_run_metrics(self, experiment_name: str, run_hash: str,
-                           select_metrics: Union[str, List[str], Tuple[str]]
+                           select_metrics: Optional[
+                               Union[str, List[str], Tuple[str]]
+                           ] = None
                            ) -> Optional[Run]:
         if not self.run_exists(experiment_name, run_hash):
             return None
 
-        if isinstance(select_metrics, str):
+        if select_metrics is not None and isinstance(select_metrics, str):
             select_metrics = [select_metrics]
 
         run = Run(self, experiment_name, run_hash)
         for metric_name, metric in run.get_all_metrics().items():
-            if metric_name in select_metrics:
+            if select_metrics is None or metric_name in select_metrics:
                 for trace in metric.get_all_traces():
                     metric.append(trace)
                     run.add(metric)
