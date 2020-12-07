@@ -1,7 +1,7 @@
 import aim
 
 
-sess = aim.Session()
+sess = aim.Session(experiment='1run_25m_10000steps')
 
 sess.set_params({
     'test_param_1': 1,
