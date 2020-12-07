@@ -2,7 +2,7 @@ import aim
 
 
 for r in range(100):
-    sess = aim.Session(experiment='100run_25m_1000steps')
+    sess = aim.Session(experiment='100run_25m_50steps')
     print('Run {}: {}'.format(r, sess.run_hash))
 
     sess.set_params({
@@ -12,7 +12,7 @@ for r in range(100):
     })
 
     for m in range(25):
-        for s in range(1000):
+        for s in range(50):
             sess.track(s, name='metric_{}'.format(m))
 
     sess.close()
