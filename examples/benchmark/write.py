@@ -7,7 +7,6 @@ parser.add_argument('--runs', type=int, default=1000)
 parser.add_argument('--params', type=int, default=100)
 parser.add_argument('--metrics', type=int, default=100)
 parser.add_argument('--steps', type=int, default=100)
-
 args = parser.parse_args()
 
 for r in range(args.runs):

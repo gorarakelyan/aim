@@ -1,4 +1,5 @@
 from pprint import pprint
+import argparse
 import time
 
 from aim.engine.repo.repo import AimRepo
@@ -19,18 +20,20 @@ def scale_trace_steps(max_metric_len, max_steps):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--query', type=str,
+                        default='metric_2, metric if experiment is not None')
+    args = parser.parse_args()
+
     # Get repo
     s = time.time()
     repo = AimRepo.get_working_repo(mode='r')
     e = time.time()
     print('Found repo in {}ms'.format(e-s))
 
-    query = 'metric_2, metric ' \
-            ' if experiment is not None'
-
     s = time.time()
     parser = Statement()
-    parsed_stmt = parser.parse(query)
+    parsed_stmt = parser.parse(args.query)
     statement_select = parsed_stmt.node['select']
     statement_expr = parsed_stmt.node['expression']
     e = time.time()
