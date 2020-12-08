@@ -23,6 +23,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--query', type=str,
                         default='metric_2, metric if experiment is not None')
+    parser.add_argument('--print')
     args = parser.parse_args()
 
     # Get repo
@@ -94,4 +95,5 @@ if __name__ == '__main__':
     e = time.time()
     print('Serialized runs in {}ms'.format(e-s))
 
-    # pprint(runs_list)
+    if args.print:
+        pprint(runs_list)
