@@ -76,7 +76,10 @@ if __name__ == '__main__':
             except:
                 pass
             finally:
-                metric.close_artifact()
+                try:
+                    metric.close_artifact()
+                except:
+                    pass
         run.close_storage()
     e = time.time()
     print('Closed storage and read runs in {}ms'.format(e-s))
