@@ -55,7 +55,7 @@ class Session:
         self._repo_path = self.repo.path
 
         # Run queue worker
-        self._queue = Queue()
+        self._queue = Queue(maxsize=512)
         self._queue_worker_th = threading.Thread(target=self._queue_worker)
         self._queue_worker_th.daemon = True
         self._queue_worker_th.start()

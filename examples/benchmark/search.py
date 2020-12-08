@@ -30,7 +30,7 @@ if __name__ == '__main__':
     s = time.time()
     repo = AimRepo.get_working_repo(mode='r')
     e = time.time()
-    print('Found repo in {}ms'.format(e-s))
+    print('Found repo in {}s'.format(e-s))
 
     s = time.time()
     parser = Statement()
@@ -38,12 +38,12 @@ if __name__ == '__main__':
     statement_select = parsed_stmt.node['select']
     statement_expr = parsed_stmt.node['expression']
     e = time.time()
-    print('Parsed stmt in {}ms'.format(e-s))
+    print('Parsed stmt in {}s'.format(e-s))
 
     s = time.time()
     res = repo.select(statement_select, statement_expr)
     e = time.time()
-    print('Searched for matched runs in {}ms'.format(e-s))
+    print('Searched for matched runs in {}s'.format(e-s))
 
     s = time.time()
     max_num_records = 0
@@ -58,7 +58,7 @@ if __name__ == '__main__':
             except:
                 pass
     e = time.time()
-    print('Opened storage and got runs lengths in {}ms'.format(e-s))
+    print('Opened storage and got runs lengths in {}s'.format(e-s))
 
     steps = scale_trace_steps(max_num_records, 50)
 
@@ -86,14 +86,20 @@ if __name__ == '__main__':
                     pass
         run.close_storage()
     e = time.time()
-    print('Read runs and closed storage in {}ms'.format(e-s))
+    print('Read runs and closed storage in {}s'.format(e-s))
 
     s = time.time()
     runs_list = []
     for run in res.runs:
         runs_list.append(run.to_dict(include_only_selected_agg_metrics=True))
     e = time.time()
-    print('Serialized runs in {}ms'.format(e-s))
+    print('Serialized runs in {}s'.format(e-s))
+
+    s = time.time()
+    print(res.get_selected_params())
+    print(res.get_selected_metrics_context())
+    e = time.time()
+    print('Meta fetched in {}s'.format(e-s))
 
     if args.print:
         pprint(runs_list)
