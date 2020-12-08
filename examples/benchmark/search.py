@@ -23,7 +23,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--query', type=str,
                         default='metric_2, metric if experiment is not None')
-    parser.add_argument('--print')
+    parser.add_argument('--print', type=int, default=0)
     args = parser.parse_args()
 
     # Get repo
