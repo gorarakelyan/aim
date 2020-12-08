@@ -11,7 +11,7 @@ parser.add_argument('--steps', type=int, default=100)
 args = parser.parse_args()
 
 for r in range(args.runs):
-    sess = aim.Session(experiment='runs{}_params{}_metrics{}_steps{}')
+    sess = aim.Session(experiment='runs{}_params{}_metrics{}_steps{}'.format(args.runs, args.params, args.metrics, args.steps))
     print('Run {}: {}'.format(r, sess.run_hash))
 
     sess.set_params({'test_param_{}'.format(i): i for i in range(args.params)})
