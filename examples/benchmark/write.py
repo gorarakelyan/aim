@@ -1,22 +1,23 @@
+import argparse
 import aim
 
 
-runs = 1000
-metrics = 10
-steps = 10
+parser = argparse.ArgumentParser()
+parser.add_argument('--runs', type=int, default=1000)
+parser.add_argument('--params', type=int, default=100)
+parser.add_argument('--metrics', type=int, default=100)
+parser.add_argument('--steps', type=int, default=100)
 
-for r in range(runs):
-    sess = aim.Session(experiment='uwrite')
+args = parser.parse_args()
+
+for r in range(args.runs):
+    sess = aim.Session(experiment='runs{}_params{}_metrics{}_steps{}')
     print('Run {}: {}'.format(r, sess.run_hash))
 
-    sess.set_params({
-        'test_param_1': 1,
-        'test_param_2': 2,
-        'test_param_3': 3,
-    })
+    sess.set_params({'test_param_{}'.format(i): i for i in range(args.params)})
 
-    for m in range(metrics):
-        for s in range(steps):
+    for m in range(args.metrics):
+        for s in range(args.steps):
             sess.track(s, name='metric_{}'.format(m))
 
     sess.close()
