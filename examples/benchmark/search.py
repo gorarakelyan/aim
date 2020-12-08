@@ -82,7 +82,7 @@ if __name__ == '__main__':
                     pass
         run.close_storage()
     e = time.time()
-    print('Closed storage and read runs in {}ms'.format(e-s))
+    print('Read runs and closed storage in {}ms'.format(e-s))
 
     s = time.time()
     runs_list = []
